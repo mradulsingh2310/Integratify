@@ -1,0 +1,15 @@
+{
+  "dependencies": {
+    "axios": "^1.7.9",
+    "body-parser": "^1.20.3",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "nodemon": "^3.1.9"
+  },
+  "scripts": {
+    "start": "nodemon google-business-api.js",
+    "start_facebook": "nodemon facebook-integration-api.js",
+    "start_blogger": "nodemon blogger-integration-api.js",
+    "start_tumblr": "nodemon tumblr-integration-api.js"
+  }
+}
