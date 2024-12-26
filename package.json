@@ -10,6 +10,7 @@
     "start": "nodemon google-business-api.js",
     "start_facebook": "nodemon facebook-integration-api.js",
     "start_blogger": "nodemon blogger-integration-api.js",
-    "start_tumblr": "nodemon tumblr-integration-api.js"
+    "start_tumblr": "nodemon tumblr-integration-api.js",
+    "start_twitter": "nodemon twitter-integration-api.js"
   }
 }

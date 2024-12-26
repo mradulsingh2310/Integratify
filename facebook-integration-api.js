@@ -10,10 +10,12 @@ const APP_SECRET = process.env.APP_SECRET;
 const REDIRECT_URI = process.env.REDIRECT_URI;
 
 let userAccessToken = ''; // To store user access token temporarily
+let pageAccessToken = ''; // To store page access token temporarily
+let pageId = ''; // To store page ID temporarily
 
 // Step 1: Redirect to Facebook Login
 app.get('/facebook/auth', (req, res) => {
-  const fbLoginUrl = `https://www.facebook.com/v16.0/dialog/oauth?client_id=${APP_ID}&redirect_uri=${REDIRECT_URI}&state=random_string`;
+  const fbLoginUrl = `https://www.facebook.com/v16.0/dialog/oauth?client_id=${APP_ID}&redirect_uri=${REDIRECT_URI}&state=random_string&scope=email%2Cpages_manage_posts`;
   res.redirect(fbLoginUrl);
 });
 
@@ -52,7 +54,8 @@ app.get('/facebook/pages', async (req, res) => {
         Authorization: `Bearer ${userAccessToken}`,
       },
     });
-
+    pageAccessToken = response.data.data[0].access_token;
+    pageId = response.data.data[0].id;
     res.json(response.data);
   } catch (error) {
     console.error('Error fetching pages:', error.response.data);
@@ -62,14 +65,13 @@ app.get('/facebook/pages', async (req, res) => {
 
 // Step 4: Post to a Page
 app.post('/facebook/post', async (req, res) => {
-  const pageId = 'your-page-id'; // Replace with the page ID you want to post to
-  const pageAccessToken = 'page-access-token'; // Replace with the page access token from `/facebook/pages`
+  const pageToken = pageAccessToken; // Replace with the page access token from `/facebook/pages`
 
   try {
     const response = await axios.post(
       `https://graph.facebook.com/v16.0/${pageId}/feed`,
       { message: 'Hello from my app!' },
-      { headers: { Authorization: `Bearer ${pageAccessToken}` } }
+      { headers: { Authorization: `Bearer ${pageToken}` } }
     );
 
     res.json(response.data);

@@ -18,3 +18,6 @@ We welcome contributions! Please read our [contributing guidelines](CONTRIBUTING
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
+
+
+https://www.facebook.com/v21.0/dialog/oauth?response_type=code&client_id=103667826405103&redirect_uri=https%3A%2F%2Faccount.buffer.com%2Foauth%2Ffacebook%2Fcallback&scope=email%2Cuser_posts%2Cinstagram_basic%2Cinstagram_content_publish%2Cinstagram_manage_comments%2Cinstagram_manage_insights%2Cpages_show_list%2Cpublic_profile%2Cread_insights%2Cpages_read_engagement%2Cpages_read_user_content%2Cpages_manage_posts%2Cpages_manage_metadata%2Cpages_manage_engagement%2Cpages_manage_ads%2Cads_management%2Cbusiness_management%2Cads_read&state=qw2s6blfsv
