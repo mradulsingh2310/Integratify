@@ -1,0 +1,189 @@
+{
+  "locations": [
+    {
+      "name": "locations/13236245616427686330",
+      "title": "ADA Assist",
+      "phoneNumbers": {
+        "primaryPhone": "(866) 880-2754"
+      },
+      "categories": {
+        "primaryCategory": {
+          "name": "categories/gcid:corporate_office",
+          "displayName": "Corporate office",
+          "serviceTypes": [
+            {
+              "serviceTypeId": "job_type_id:cleaning",
+              "displayName": "Cleaning"
+            },
+            {
+              "serviceTypeId": "job_type_id:guards",
+              "displayName": "Guards"
+            },
+            {
+              "serviceTypeId": "job_type_id:security_services",
+              "displayName": "Security services"
+            }
+          ],
+          "moreHoursTypes": [
+            {
+              "hoursTypeId": "ACCESS",
+              "displayName": "Access",
+              "localizedDisplayName": "Access"
+            },
+            {
+              "hoursTypeId": "BREAKFAST",
+              "displayName": "Breakfast",
+              "localizedDisplayName": "Breakfast"
+            },
+            {
+              "hoursTypeId": "BRUNCH",
+              "displayName": "Brunch",
+              "localizedDisplayName": "Brunch"
+            },
+            {
+              "hoursTypeId": "DELIVERY",
+              "displayName": "Delivery",
+              "localizedDisplayName": "Delivery"
+            },
+            {
+              "hoursTypeId": "DINNER",
+              "displayName": "Dinner",
+              "localizedDisplayName": "Dinner"
+            },
+            {
+              "hoursTypeId": "DRIVE_THROUGH",
+              "displayName": "Drive through",
+              "localizedDisplayName": "Drive through"
+            },
+            {
+              "hoursTypeId": "HAPPY_HOUR",
+              "displayName": "Happy hours",
+              "localizedDisplayName": "Happy hours"
+            },
+            {
+              "hoursTypeId": "KITCHEN",
+              "displayName": "Kitchen",
+              "localizedDisplayName": "Kitchen"
+            },
+            {
+              "hoursTypeId": "LUNCH",
+              "displayName": "Lunch",
+              "localizedDisplayName": "Lunch"
+            },
+            {
+              "hoursTypeId": "ONLINE_SERVICE_HOURS",
+              "displayName": "Online service hours",
+              "localizedDisplayName": "Online service hours"
+            },
+            {
+              "hoursTypeId": "PICKUP",
+              "displayName": "Pickup",
+              "localizedDisplayName": "Pickup"
+            },
+            {
+              "hoursTypeId": "TAKEOUT",
+              "displayName": "Takeout",
+              "localizedDisplayName": "Takeout"
+            },
+            {
+              "hoursTypeId": "SENIOR_HOURS",
+              "displayName": "Senior hours",
+              "localizedDisplayName": "Senior hours"
+            }
+          ]
+        }
+      },
+      "storefrontAddress": {
+        "regionCode": "US",
+        "languageCode": "en",
+        "postalCode": "92102",
+        "administrativeArea": "CA",
+        "locality": "San Diago",
+        "addressLines": [
+          "111, Street 1"
+        ]
+      },
+      "websiteUri": "https://ada-assist.com/",
+      "regularHours": {
+        "periods": [
+          {
+            "openDay": "MONDAY",
+            "openTime": {
+              "hours": 9
+            },
+            "closeDay": "MONDAY",
+            "closeTime": {
+              "hours": 17
+            }
+          },
+          {
+            "openDay": "TUESDAY",
+            "openTime": {
+              "hours": 9
+            },
+            "closeDay": "TUESDAY",
+            "closeTime": {
+              "hours": 17
+            }
+          },
+          {
+            "openDay": "WEDNESDAY",
+            "openTime": {
+              "hours": 9
+            },
+            "closeDay": "WEDNESDAY",
+            "closeTime": {
+              "hours": 17
+            }
+          },
+          {
+            "openDay": "THURSDAY",
+            "openTime": {
+              "hours": 9
+            },
+            "closeDay": "THURSDAY",
+            "closeTime": {
+              "hours": 17
+            }
+          },
+          {
+            "openDay": "FRIDAY",
+            "openTime": {
+              "hours": 9
+            },
+            "closeDay": "FRIDAY",
+            "closeTime": {
+              "hours": 17
+            }
+          }
+        ]
+      },
+      "serviceArea": {
+        "businessType": "CUSTOMER_AND_BUSINESS_LOCATION",
+        "places": {
+          "placeInfos": [
+            {
+              "placeName": "San Diego, CA, USA",
+              "placeId": "ChIJSx6SrQ9T2YARed8V_f0hOg0"
+            }
+          ]
+        },
+        "regionCode": "US"
+      },
+      "latlng": {
+        "latitude": 32.700597,
+        "longitude": -117.1826423
+      },
+      "metadata": {
+        "canDelete": true,
+        "canModifyServiceList": true,
+        "placeId": "ChIJ5XC2HQ-nDygR4t1Xdi2oTN8",
+        "mapsUri": "https://maps.google.com/maps?cid=16090420481900404194",
+        "newReviewUri": "https://search.google.com/local/writereview?placeid=ChIJ5XC2HQ-nDygR4t1Xdi2oTN8"
+      },
+      "profile": {
+        "description": "Ada assist is an accessibility service provider."
+      }
+    }
+  ]
+}

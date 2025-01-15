@@ -1,0 +1,11 @@
+{
+  "accounts": [
+    {
+      "name": "accounts/117719187792093398189",
+      "accountName": "ws4atester",
+      "type": "PERSONAL",
+      "verificationState": "UNVERIFIED",
+      "vettedState": "NOT_VETTED"
+    }
+  ]
+}

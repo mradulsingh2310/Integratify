@@ -2,15 +2,19 @@
   "dependencies": {
     "axios": "^1.7.9",
     "body-parser": "^1.20.3",
+    "csv-parser": "^3.1.0",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
+    "google-auth-library": "^9.15.0",
+    "multer": "^1.4.5-lts.1",
     "nodemon": "^3.1.9"
   },
   "scripts": {
-    "start": "nodemon google-business-api.js",
+    "start": "nodemon gbc.js",
     "start_facebook": "nodemon facebook-integration-api.js",
     "start_blogger": "nodemon blogger-integration-api.js",
     "start_tumblr": "nodemon tumblr-integration-api.js",
-    "start_twitter": "nodemon twitter-integration-api.js"
+    "start_twitter": "nodemon twitter-integration-api.js",
+    "start_wordpress": "nodemon wordpress-integration-api.js"
   }
 }
