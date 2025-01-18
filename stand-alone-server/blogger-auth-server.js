@@ -110,8 +110,10 @@ router.get('/webhook', async (req, res) => {
         console.log('Refresh token:', refresh_token);
         console.log('Expires in:', expires_in);
 
-        // Redirect back to client with tokens
-        const redirectUrl = new URL('/edit.php?post_type=gpt_post&page=gpt_settings&tab=blogger', clientOrigin);
+        // Use clientRedirectUrl directly instead of constructing new URL
+        const redirectUrl = new URL(clientRedirectUrl);
+        
+        // Add query parameters to existing URL
         redirectUrl.searchParams.set('access_token', access_token);
         redirectUrl.searchParams.set('refresh_token', refresh_token);
         redirectUrl.searchParams.set('expires_in', expires_in);

@@ -150,7 +150,7 @@ router.get('/webhook', async (req, res) => {
         const accessTokenSecret = responseParams.oauth_token_secret;
 
         // Redirect back to client with tokens
-        const redirectUrl = new URL('/edit.php?post_type=gpt_post&page=gpt_settings&tab=tumblr', clientOrigin);
+        const redirectUrl = new URL(clientRedirectUrl);
         redirectUrl.searchParams.set('access_token', accessToken);
         redirectUrl.searchParams.set('access_token_secret', accessTokenSecret);
         redirectUrl.searchParams.set('state', state);
