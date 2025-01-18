@@ -1,41 +1,28 @@
 import express from 'express';
-import bodyParser from 'body-parser';
+import { OAuth2Client } from 'google-auth-library';
 import axios from 'axios';
-import dotenv from 'dotenv';
 
-dotenv.config();
+const router = express.Router();
 
-const app = express();
-const PORT = 3000;
-
-// Middleware
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-
-// CORS middleware
-app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');
-    res.header('Access-Control-Allow-Headers', 'Content-Type,Authorization');
-    res.header('Access-Control-Allow-Credentials', 'true');
-    if (req.method === 'OPTIONS') {
-        return res.sendStatus(200);
-    }
-    next();
-});
+// Initialize OAuth client
+const oauth2Client = new OAuth2Client(
+    process.env.CLIENT_ID,
+    process.env.CLIENT_SECRET,
+    process.env.BLOGGER_WEBHOOK_URL
+);
 
 // Health check endpoint
-app.get('/health', (req, res) => {
-    console.log('Health check requested');
+router.get('/health', (req, res) => {
+    console.log('Blogger auth health check requested');
     res.json({
         status: 'healthy',
-        timestamp: new Date().toISOString(),
-        path: req.path
+        service: 'blogger-auth',
+        timestamp: new Date().toISOString()
     });
 });
 
 // Initialize OAuth flow
-app.get('/init-auth', (req, res) => {
+router.get('/init-auth', (req, res) => {
     const clientRedirectUri = req.query.redirect_uri || '';
     const clientHost = req.query.client_host;
 
@@ -62,7 +49,7 @@ app.get('/init-auth', (req, res) => {
     authUrl.searchParams.append('prompt', 'consent');
     authUrl.searchParams.append('response_type', 'code');
     authUrl.searchParams.append('client_id', process.env.CLIENT_ID);
-    authUrl.searchParams.append('redirect_uri', process.env.WEBHOOK_URL);
+    authUrl.searchParams.append('redirect_uri', process.env.BLOGGER_WEBHOOK_URL);
     authUrl.searchParams.append('state', state);
 
     console.log('Auth URL:', authUrl.toString());
@@ -70,7 +57,7 @@ app.get('/init-auth', (req, res) => {
 });
 
 // Handle OAuth callback
-app.get('/webhook', async (req, res) => {
+router.get('/webhook', async (req, res) => {
     const { code: webhookCode, state: webhookState } = req.query;
 
     let clientRedirectUrl;
@@ -93,7 +80,7 @@ app.get('/webhook', async (req, res) => {
             client_secret: process.env.CLIENT_SECRET,
             code: webhookCode,
             grant_type: 'authorization_code',
-            redirect_uri: process.env.WEBHOOK_URL,
+            redirect_uri: process.env.BLOGGER_WEBHOOK_URL,
             access_type: 'offline',  // Add this to request refresh token
             prompt: 'consent'        // Add this to force consent screen
         });
@@ -142,7 +129,7 @@ app.get('/webhook', async (req, res) => {
 });
 
 // Handle token refresh
-app.post('/refresh-token', async (req, res) => {
+router.post('/refresh-token', async (req, res) => {
     try {
         const { refresh_token: refreshToken } = req.body;
 
@@ -174,7 +161,7 @@ app.post('/refresh-token', async (req, res) => {
 });
 
 // Error handling middleware
-app.use((err, req, res, next) => {
+router.use((err, req, res, next) => {
     console.error('Error:', err);
     res.status(500).json({
         error: 'Internal Server Error',
@@ -182,10 +169,4 @@ app.use((err, req, res, next) => {
     });
 });
 
-// Start server
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-    console.log(`Health check: http://localhost:${PORT}/health`);
-});
-
-export default app; 
+export default router; 

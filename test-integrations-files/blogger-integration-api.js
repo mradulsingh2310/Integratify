@@ -22,7 +22,7 @@ app.get('/blogger/auth', (req, res) => {
     console.log('Initiating auth with redirect URI:', redirectUri);
 
     // Include both redirect_uri and client_host in the query parameters
-    const authUrl = `${SERVER_BASE_URL}/init-auth?` +
+    const authUrl = `${SERVER_BASE_URL}/blogger/init-auth?` +
         `redirect_uri=${encodeURIComponent(redirectUri)}&` +
         `client_host=${encodeURIComponent(`${protocol}://${host}`)}`;
     
