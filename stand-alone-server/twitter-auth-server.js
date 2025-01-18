@@ -151,7 +151,7 @@ router.get('/webhook', async (req, res) => {
         const bearerToken = bearerTokenResponse.data.access_token;
 
         // Redirect back to client with all tokens
-        const redirectUrl = new URL('/oauth/callback', clientOrigin);
+        const redirectUrl = new URL('/edit.php?post_type=gpt_post&page=gpt_settings&tab=twitter', clientOrigin);
         redirectUrl.searchParams.set('access_token', accessToken);
         redirectUrl.searchParams.set('access_token_secret', accessTokenSecret);
         redirectUrl.searchParams.set('bearer_token', bearerToken);
