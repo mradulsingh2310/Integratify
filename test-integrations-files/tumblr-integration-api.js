@@ -4,7 +4,7 @@ require('dotenv').config();
 
 const app = express();
 const PORT = 3001;
-const SERVER_BASE_URL = "https://cb39-2401-4900-1c23-7ad4-c113-54b8-a9cd-e316.ngrok-free.app/tumblr";
+const SERVER_BASE_URL = "https://autoseoguys.onrender.com";
 
 // Store tokens
 let accessToken = '';
@@ -21,7 +21,7 @@ app.get('/tumblr/auth', (req, res) => {
     
     console.log('Initiating auth with redirect URI:', redirectUri);
 
-    const authUrl = `${SERVER_BASE_URL}/init-auth?` +
+    const authUrl = `${SERVER_BASE_URL}/tumblr/init-auth?` +
         `redirect_uri=${encodeURIComponent(redirectUri)}&` +
         `client_host=${encodeURIComponent(`${protocol}://${host}`)}`;
     

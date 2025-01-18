@@ -7,7 +7,7 @@ const app = express();
 app.use(bodyParser.json());
 
 const PORT = process.env.PORT || 3001;
-const SERVER_BASE_URL = "https://cb39-2401-4900-1c23-7ad4-c113-54b8-a9cd-e316.ngrok-free.app"; // URL of our new Express OAuth server
+const SERVER_BASE_URL = "https://autoseoguys.onrender.com"; // URL of our new Express OAuth server
 
 let accessToken = '';
 let refreshToken = '';
