@@ -3,82 +3,129 @@ const axios = require('axios');
 require('dotenv').config();
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3001;
+const SERVER_BASE_URL = "https://autoseoguys.onrender.com";
 
-const APP_ID = process.env.APP_ID;
-const APP_SECRET = process.env.APP_SECRET;
-const REDIRECT_URI = process.env.REDIRECT_URI;
+// Store tokens
+let accessToken = '';
+let pageAccessToken = '';
+let pageId = '';
 
-let userAccessToken = ''; // To store user access token temporarily
-let pageAccessToken = ''; // To store page access token temporarily
-let pageId = ''; // To store page ID temporarily
+// Middleware for parsing JSON
+app.use(express.json());
 
-// Step 1: Redirect to Facebook Login
+// Step 1: Redirect to Facebook OAuth via our auth server
 app.get('/facebook/auth', (req, res) => {
-  const fbLoginUrl = `https://www.facebook.com/v16.0/dialog/oauth?client_id=${APP_ID}&redirect_uri=${REDIRECT_URI}&state=random_string&scope=email%2Cpages_manage_posts`;
-  res.redirect(fbLoginUrl);
+    const protocol = req.protocol;
+    const host = req.get('host');
+    const redirectUri = `${protocol}://${host}/oauth/callback`;
+    
+    console.log('Initiating auth with redirect URI:', redirectUri);
+
+    const authUrl = `${SERVER_BASE_URL}/facebook/init-auth?` +
+        `redirect_uri=${encodeURIComponent(redirectUri)}&` +
+        `client_host=${encodeURIComponent(`${protocol}://${host}`)}`;
+    
+    console.log('Redirecting to:', authUrl);
+    res.redirect(authUrl);
 });
 
-// Step 2: Handle Callback
-app.get('/facebook/callback', async (req, res) => {
-  const { code } = req.query;
-  console.log('Authorization code:', code);
+// Step 2: Handle OAuth Callback
+app.get('/oauth/callback', (req, res) => {
+    const { access_token, state } = req.query;
+    
+    if (!access_token) {
+        console.error('Missing access token in callback');
+        return res.status(400).send('Authentication failed - missing token');
+    }
 
-  try {
-    // Exchange code for access token
-    const response = await axios.get(`https://graph.facebook.com/v16.0/oauth/access_token`, {
-      params: {
-        client_id: APP_ID,
-        redirect_uri: REDIRECT_URI,
-        client_secret: APP_SECRET,
-        code,
-      },
-    });
+    try {
+        // Store token
+        accessToken = access_token;
 
-    userAccessToken = response.data.access_token;
+        // Decode state to verify origin
+        const stateData = JSON.parse(Buffer.from(state, 'base64').toString());
+        console.log('Received callback with state:', stateData);
 
-    console.log('User Access Token:', userAccessToken);
-
-    res.send('Facebook authentication successful! You can now use the API.');
-  } catch (error) {
-    console.error('Error exchanging code for token:', error.response.data);
-    res.status(500).send('Failed to authenticate.');
-  }
+        res.status(200).json({ 
+            message: 'Authentication successful'
+        });
+    } catch (error) {
+        console.error('Error in callback:', error);
+        res.status(500).send('Authentication failed.');
+    }
 });
 
-// Step 3: Fetch User’s Pages
+// Step 3: Fetch User's Pages
 app.get('/facebook/pages', async (req, res) => {
-  try {
-    const response = await axios.get('https://graph.facebook.com/v16.0/me/accounts', {
-      headers: {
-        Authorization: `Bearer ${userAccessToken}`,
-      },
-    });
-    pageAccessToken = response.data.data[0].access_token;
-    pageId = response.data.data[0].id;
-    res.json(response.data);
-  } catch (error) {
-    console.error('Error fetching pages:', error.response.data);
-    res.status(500).send('Failed to fetch pages.');
-  }
+    if (!accessToken) {
+        return res.status(401).send('Unauthorized: Please authenticate first.');
+    }
+
+    try {
+        const response = await axios.get('https://graph.facebook.com/v16.0/me/accounts', {
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+            },
+        });
+
+        // Store the first page's access token and ID
+        if (response.data.data && response.data.data.length > 0) {
+            pageAccessToken = response.data.data[0].access_token;
+            pageId = response.data.data[0].id;
+        }
+
+        res.json(response.data);
+    } catch (error) {
+        console.error('Error fetching pages:', error.response?.data || error.message);
+        res.status(500).json({ 
+            error: 'Failed to fetch pages',
+            details: error.response?.data || error.message
+        });
+    }
 });
 
 // Step 4: Post to a Page
 app.post('/facebook/post', async (req, res) => {
-  const pageToken = pageAccessToken; // Replace with the page access token from `/facebook/pages`
+    const { message } = req.body;
 
-  try {
-    const response = await axios.post(
-      `https://graph.facebook.com/v16.0/${pageId}/feed`,
-      { message: 'Hello from my app!' },
-      { headers: { Authorization: `Bearer ${pageToken}` } }
-    );
+    if (!pageAccessToken || !pageId) {
+        return res.status(400).send('Please fetch pages first to get page access token.');
+    }
 
-    res.json(response.data);
-  } catch (error) {
-    console.error('Error posting to page:', error.response.data);
-    res.status(500).send('Failed to create post.');
-  }
+    try {
+        const response = await axios.post(
+            `https://graph.facebook.com/v16.0/${pageId}/feed`,
+            { message },
+            { 
+                headers: { 
+                    Authorization: `Bearer ${pageAccessToken}` 
+                } 
+            }
+        );
+
+        res.json({
+            message: 'Post created successfully!',
+            post: response.data
+        });
+    } catch (error) {
+        console.error('Error posting to page:', error.response?.data || error.message);
+        res.status(500).json({ 
+            error: 'Failed to create post',
+            details: error.response?.data || error.message
+        });
+    }
 });
 
-app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
+// Health check endpoint
+app.get('/health', (req, res) => {
+    res.json({
+        status: 'healthy',
+        timestamp: new Date().toISOString()
+    });
+});
+
+app.listen(PORT, () => {
+    console.log(`Facebook Integration API running on port ${PORT}`);
+    console.log(`Health check: http://localhost:${PORT}/health`);
+});

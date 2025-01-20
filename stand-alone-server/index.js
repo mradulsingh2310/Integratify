@@ -6,6 +6,7 @@ import twitterAuthServer from './twitter-auth-server.js';
 import tumblrAuthServer from './tumblr-auth-server.js';
 import googleBusinessAuthServer from './google-business-auth-server.js';
 import wordpressAuthServer from './wordpress-auth-server.js';
+import facebookAuthServer from './facebook-auth-server.js';
 
 dotenv.config();
 
@@ -34,6 +35,7 @@ app.use('/twitter', twitterAuthServer);
 app.use('/tumblr', tumblrAuthServer);
 app.use('/google-business', googleBusinessAuthServer);
 app.use('/wordpress', wordpressAuthServer);
+app.use('/facebook', facebookAuthServer);
 
 // Root health check
 app.get('/health', (req, res) => {
@@ -45,7 +47,8 @@ app.get('/health', (req, res) => {
             twitter: true,
             tumblr: true,
             'google-business': true,
-            wordpress: true
+            wordpress: true,
+            facebook: true
         }
     });
 });

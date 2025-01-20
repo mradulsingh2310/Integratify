@@ -4,7 +4,7 @@ require('dotenv').config();
 
 const app = express();
 const PORT = 3001;
-const SERVER_BASE_URL = process.env.AUTH_SERVER_URL || "http://localhost:3000/google-business";
+const SERVER_BASE_URL = "https://autoseoguys.onrender.com";
 
 // Store tokens
 let accessToken = '';
@@ -21,7 +21,7 @@ app.get('/google-business/auth', (req, res) => {
     
     console.log('Initiating auth with redirect URI:', redirectUri);
 
-    const authUrl = `${SERVER_BASE_URL}/init-auth?` +
+    const authUrl = `${SERVER_BASE_URL}/google-business/init-auth?` +
         `redirect_uri=${encodeURIComponent(redirectUri)}&` +
         `client_host=${encodeURIComponent(`${protocol}://${host}`)}`;
     
@@ -47,6 +47,9 @@ app.get('/oauth/callback', (req, res) => {
         // Store tokens
         accessToken = access_token;
         refreshToken = refresh_token;
+
+        console.log('Access token:', accessToken);
+        console.log('Refresh token:', refreshToken);
 
         // Decode state to verify origin
         const stateData = JSON.parse(Buffer.from(state, 'base64').toString());
